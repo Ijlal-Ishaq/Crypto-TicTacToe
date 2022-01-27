@@ -113,7 +113,7 @@ const getDesignTokens = (mode: PaletteMode): ThemeOptions => ({
 });
 
 const Theme: FC = ({ children }) => {
-  const [mode, setMode] = useState("light");
+  const [mode] = useState("light");
 
   const theme = useMemo(
     () => createTheme(getDesignTokens(mode as PaletteMode)),

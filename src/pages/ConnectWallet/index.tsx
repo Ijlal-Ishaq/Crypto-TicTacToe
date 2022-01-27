@@ -52,15 +52,7 @@ const Index: FC = () => {
   return (
     <MainDiv>
       <Logo>LOGO</Logo>
-      <CustomButtons onClick={() => navigate("/lobby")}>
-        GAME LOBBY
-      </CustomButtons>
-      <CustomButtons onClick={() => navigate("/collection")}>
-        COLLECTION
-      </CustomButtons>
-      <CustomButtons onClick={() => navigate("/info")}>
-        HOW IT WORKS?
-      </CustomButtons>
+      <CustomButtons onClick={() => navigate("/home")}>CONNECT</CustomButtons>
     </MainDiv>
   );
 };
