@@ -7,7 +7,7 @@ const MainDiv = styled("div")(({ theme }) => ({
 }));
 
 const Index: FC = () => {
-  return <MainDiv>Info</MainDiv>;
+  return <MainDiv>game</MainDiv>;
 };
 
 export default Index;

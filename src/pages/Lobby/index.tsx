@@ -21,12 +21,16 @@ const Heading = styled("div")(({ theme }) => ({
 
 const SubLayout = styled("div")(({ theme }) => ({
   width: "100%",
-  flexGrow: 1,
   display: "flex",
   flexDirection: "row",
   justifyContent: "space-around",
   padding: "30px",
   paddingTop: "40px",
+
+  [theme.breakpoints.down("sm")]: {
+    padding: "19px",
+    flexDirection: "column-reverse",
+  },
 }));
 
 const SubDiv = styled("div")(({ theme }) => ({
@@ -40,6 +44,11 @@ const SubDiv = styled("div")(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   padding: "10px 20px",
+
+  [theme.breakpoints.down("sm")]: {
+    width: "100%",
+    marginBottom: "20px",
+  },
 }));
 
 const Index: FC = () => {

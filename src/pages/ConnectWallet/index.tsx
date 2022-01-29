@@ -16,6 +16,10 @@ const MainDiv = styled("div")(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   justifyContent: "center",
+
+  [theme.breakpoints.down("sm")]: {
+    width: "300px",
+  },
 }));
 
 const Logo = styled("div")(({ theme }) => ({
@@ -42,8 +46,9 @@ const CustomButtons = styled("div")(({ theme }) => ({
   userSelect: "none",
 
   "&:hover": {
-    width: "100%",
-    height: "55px",
+    // width: "100%",
+    // height: "55px",
+    background: "rgba(255, 255, 255, 0.1)",
   },
 }));
 

@@ -5,6 +5,7 @@ import Home from "../pages/Home";
 import Lobby from "../pages/Lobby";
 import Collection from "../pages/Collection";
 import Info from "../pages/Info";
+import Game from "../pages/Game";
 import PageNotFound from "../pages/PageNotFound";
 
 const Index: FC = () => {
@@ -35,6 +36,10 @@ const Index: FC = () => {
         {
           path: "info",
           element: <Info />,
+        },
+        {
+          path: "game",
+          element: <Game />,
         },
         {
           path: "*",

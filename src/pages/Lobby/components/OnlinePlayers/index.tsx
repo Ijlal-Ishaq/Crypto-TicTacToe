@@ -55,6 +55,13 @@ const PlayRequest = styled("div")(({ theme }) => ({
   fontWeight: "300",
   marginLeft: "auto",
   cursor: "pointer",
+  userSelect: "none",
+
+  "&:hover": {
+    // width: "100%",
+    // height: "55px",
+    background: "rgba(255, 255, 255, 0.1)",
+  },
 }));
 
 const Index: FC = () => {
@@ -78,7 +85,15 @@ const Index: FC = () => {
       {players.map((player) => {
         return (
           <PlayerDiv>
-            {player}
+            <div
+              style={{
+                flex: 1,
+                overflow: "hidden",
+                textAlign: "left",
+              }}
+            >
+              {player}
+            </div>
             <PlayRequest>Request</PlayRequest>
           </PlayerDiv>
         );
