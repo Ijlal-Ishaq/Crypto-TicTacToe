@@ -17,6 +17,7 @@ const Heading = styled("div")(({ theme }) => ({
   marginTop: "50px",
   fontSize: "30px",
   userSelect: "none",
+  opacity: "0.3",
 }));
 
 const SubLayout = styled("div")(({ theme }) => ({

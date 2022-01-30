@@ -1,6 +1,7 @@
 import { FC } from "react";
 import { styled } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
+import AppLogo from "../../assets/images/Logo.png";
 
 const MainDiv = styled("div")(({ theme }) => ({
   marginTop: "100px",
@@ -8,6 +9,7 @@ const MainDiv = styled("div")(({ theme }) => ({
   marginLeft: "auto",
   marginRight: "auto",
   padding: "50px 30px",
+  paddingTop: "20px",
   background: "rgba(255, 255, 255, 0.03)",
   boxShadow: "0 0 1rem 0 rgba(0, 0, 0, .2)",
   backdropFilter: "blur(4px)",
@@ -23,9 +25,10 @@ const MainDiv = styled("div")(({ theme }) => ({
   },
 }));
 
-const Logo = styled("div")(({ theme }) => ({
+const Logo = styled("img")(({ theme }) => ({
   margin: "10px auto",
-  fontSize: "50px",
+  height: "175px",
+  width: "250px",
 }));
 
 const CustomButtons = styled("div")(({ theme }) => ({
@@ -39,7 +42,7 @@ const CustomButtons = styled("div")(({ theme }) => ({
   cursor: "pointer",
   width: "95%",
   height: "50px",
-  color: "rgba(255,255,255,0.8)",
+  color: "rgba(255,255,255,0.7)",
   fontSize: "15px",
   marginTop: "20px",
   marginLeft: "auto",
@@ -57,7 +60,7 @@ const Index: FC = () => {
   const navigate = useNavigate();
   return (
     <MainDiv>
-      <Logo>LOGO</Logo>
+      <Logo src={AppLogo} />
       <CustomButtons onClick={() => navigate("/lobby")}>
         GAME LOBBY
       </CustomButtons>

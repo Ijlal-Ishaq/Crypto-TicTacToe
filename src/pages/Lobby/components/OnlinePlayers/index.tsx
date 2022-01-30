@@ -12,6 +12,7 @@ const Heading = styled("div")(({ theme }) => ({
   fontSize: "17px",
   textAlign: "left",
   padding: "7px",
+  opacity: "0.3",
 }));
 
 const SearchPlayer = styled("input")(({ theme }) => ({
@@ -56,6 +57,7 @@ const PlayRequest = styled("div")(({ theme }) => ({
   marginLeft: "auto",
   cursor: "pointer",
   userSelect: "none",
+  opacity: "0.7",
 
   "&:hover": {
     // width: "100%",
@@ -90,6 +92,7 @@ const Index: FC = () => {
                 flex: 1,
                 overflow: "hidden",
                 textAlign: "left",
+                opacity: "0.7",
               }}
             >
               {player}

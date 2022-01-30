@@ -16,6 +16,7 @@ const Heading = styled("div")(({ theme }) => ({
   marginTop: "50px",
   fontSize: "30px",
   userSelect: "none",
+  opacity: "0.3",
 }));
 
 const SubLayout = styled("div")(({ theme }) => ({
@@ -37,7 +38,7 @@ const TokenCard = styled("div")(({ theme }) => ({
   borderRadius: "5px",
   display: "flex",
   flexDirection: "column",
-  padding: "0px",
+  padding: "15px",
   margin: "10px 15px",
 }));
 

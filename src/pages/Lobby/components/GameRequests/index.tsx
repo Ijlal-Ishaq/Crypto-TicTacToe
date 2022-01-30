@@ -12,6 +12,7 @@ const Heading = styled("div")(({ theme }) => ({
   fontSize: "17px",
   textAlign: "left",
   padding: "7px",
+  opacity: "0.3",
 }));
 
 const PlayerDiv = styled("div")(({ theme }) => ({
@@ -41,6 +42,7 @@ const Play = styled("div")(({ theme }) => ({
   marginLeft: "auto",
   cursor: "pointer",
   userSelect: "none",
+  opacity: "0.7",
 
   "&:hover": {
     // width: "100%",
@@ -62,7 +64,14 @@ const Index: FC = () => {
       {players.map((player) => {
         return (
           <PlayerDiv>
-            <div style={{ flex: 1, overflow: "hidden", textAlign: "left" }}>
+            <div
+              style={{
+                flex: 1,
+                overflow: "hidden",
+                textAlign: "left",
+                opacity: "0.7",
+              }}
+            >
               {player}
             </div>
             <Play>Play</Play>
