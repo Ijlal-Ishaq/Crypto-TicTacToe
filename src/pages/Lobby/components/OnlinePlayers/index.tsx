@@ -1,5 +1,8 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import { styled } from "@mui/material/styles";
+import { socketUrl } from "../../../../utils/urls";
+import { io } from "socket.io-client";
+import { useWeb3React } from "@web3-react/core";
 
 const MainDiv = styled("div")(({ theme }) => ({
   marginLeft: "auto",
@@ -67,18 +70,22 @@ const PlayRequest = styled("div")(({ theme }) => ({
 }));
 
 const Index: FC = () => {
-  const players = [
-    "0x23e05938b4619035870836D22C4Ef9988623c384",
-    "0x23e05938b4619035870836D22C4Ef9988623c384",
-    "0x23e05938b4619035870836D22C4Ef9988623c384",
-    "0x23e05938b4619035870836D22C4Ef9988623c384",
-    "0x23e05938b4619035870836D22C4Ef9988623c384",
-    "0x23e05938b4619035870836D22C4Ef9988623c384",
-    "0x23e05938b4619035870836D22C4Ef9988623c384",
-    "0x23e05938b4619035870836D22C4Ef9988623c384",
-    "0x23e05938b4619035870836D22C4Ef9988623c384",
-    "0x23e05938b4619035870836D22C4Ef9988623c384",
-  ];
+  const { account } = useWeb3React();
+  const [players] = useState([]);
+
+  useEffect(() => {
+    const socket = io(socketUrl);
+    if (socket && account) {
+      socket.on("connect", function () {
+        socket.emit("addAddress", account);
+        socket.on("getOnlineUsers", ({ data }) => {
+          console.log(data);
+        });
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <MainDiv>
       <Heading>Search</Heading>

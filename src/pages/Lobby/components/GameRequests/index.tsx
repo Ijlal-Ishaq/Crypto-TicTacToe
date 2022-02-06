@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { styled } from "@mui/material/styles";
 
 const MainDiv = styled("div")(({ theme }) => ({
@@ -51,13 +51,7 @@ const Play = styled("div")(({ theme }) => ({
   },
 }));
 const Index: FC = () => {
-  const players = [
-    "0x23e05938b4619035870836D22C4Ef9988623c384",
-    "0x23e05938b4619035870836D22C4Ef9988623c384",
-    "0x23e05938b4619035870836D22C4Ef9988623c384",
-    "0x23e05938b4619035870836D22C4Ef9988623c384",
-    "0x23e05938b4619035870836D22C4Ef9988623c384",
-  ];
+  const [players] = useState([]);
   return (
     <MainDiv>
       <Heading>Requests</Heading>
