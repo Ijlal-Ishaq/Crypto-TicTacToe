@@ -84,9 +84,9 @@ const Index: FC = () => {
       <Heading>Search</Heading>
       <SearchPlayer placeholder="Enter address..." />
       <Heading>Online Players</Heading>
-      {players.map((player) => {
+      {players.map((player, i) => {
         return (
-          <PlayerDiv>
+          <PlayerDiv key={i}>
             <div
               style={{
                 flex: 1,

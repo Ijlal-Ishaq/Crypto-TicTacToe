@@ -2,8 +2,6 @@ import { FC } from "react";
 import { styled } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import AppLogo from "../../assets/images/Logo.png";
-import { useWeb3React } from "@web3-react/core";
-import { InjectedConnector } from "@web3-react/injected-connector";
 
 const MainDiv = styled("div")(({ theme }) => ({
   marginTop: "100px",
@@ -60,21 +58,7 @@ const CustomButtons = styled("div")(({ theme }) => ({
 
 const Index: FC = () => {
   const navigate = useNavigate();
-  const {account, deactivate , connector} = useWeb3React();
-  const deactivateMetamaskWallet = async () => {
-    window.localStorage.removeItem("previousWallet");
-    await deactivate();
-    if(connector instanceof InjectedConnector){
-      await connector.deactivate();
-    }
 
-    setTimeout(() => {
-    // return true
-    return true
-      // dispatch({ type: LOCAL_TYPES.DISCONNECT_USER });
-    }, 1000);
-   
-  };
   return (
     <MainDiv>
       <Logo src={AppLogo} />
@@ -86,10 +70,6 @@ const Index: FC = () => {
       </CustomButtons>
       <CustomButtons onClick={() => navigate("/info")}>
         HOW IT WORKS?
-      </CustomButtons>
-      <CustomButtons onClick={async () => {await deactivate();
-          await deactivateMetamaskWallet()}}>
-        DiISCONNECT WALLET
       </CustomButtons>
     </MainDiv>
   );

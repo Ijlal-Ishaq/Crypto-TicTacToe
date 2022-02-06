@@ -61,9 +61,9 @@ const Index: FC = () => {
   return (
     <MainDiv>
       <Heading>Requests</Heading>
-      {players.map((player) => {
+      {players.map((player, i) => {
         return (
-          <PlayerDiv>
+          <PlayerDiv key={i}>
             <div
               style={{
                 flex: 1,

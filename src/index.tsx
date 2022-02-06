@@ -4,12 +4,12 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { Web3ReactProvider } from "@web3-react/core";
-import { getLibrary } from "./contract/getLibrary";
+import { getLibrary } from "./utils/getLibrary";
 
 ReactDOM.render(
   <React.StrictMode>
     <Web3ReactProvider getLibrary={getLibrary}>
-    <App />
+      <App />
     </Web3ReactProvider>
   </React.StrictMode>,
   document.getElementById("root")
