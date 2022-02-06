@@ -1,4 +1,4 @@
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC, useMemo, useState } from "react";
 import { CssBaseline, PaletteMode, ThemeOptions } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
@@ -126,10 +126,6 @@ const Theme: FC = ({ children }) => {
       fontSize: "0.7rem",
     },
   };
-
-  useEffect(() => {
-    console.log("theme:", mode);
-  }, [mode]);
 
   return (
     <>

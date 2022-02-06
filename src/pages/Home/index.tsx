@@ -58,6 +58,7 @@ const CustomButtons = styled("div")(({ theme }) => ({
 
 const Index: FC = () => {
   const navigate = useNavigate();
+
   return (
     <MainDiv>
       <Logo src={AppLogo} />

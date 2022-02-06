@@ -9,6 +9,7 @@ const MainDiv = styled("div")(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   height: "100vh",
+  overflowY: "scroll",
 }));
 
 const Heading = styled("div")(({ theme }) => ({
@@ -18,6 +19,10 @@ const Heading = styled("div")(({ theme }) => ({
   fontSize: "30px",
   userSelect: "none",
   opacity: "0.3",
+
+  [theme.breakpoints.down("sm")]: {
+    marginTop: "75px",
+  },
 }));
 
 const SubLayout = styled("div")(({ theme }) => ({
@@ -37,7 +42,6 @@ const SubLayout = styled("div")(({ theme }) => ({
 const SubDiv = styled("div")(({ theme }) => ({
   width: "45%",
   height: "fit-content",
-  maxHeight: "100%",
   background: "rgba(255, 255, 255, 0.03)",
   boxShadow: "0 0 1rem 0 rgba(0, 0, 0, .2)",
   backdropFilter: "blur(4px)",

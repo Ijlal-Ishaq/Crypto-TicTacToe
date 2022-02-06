@@ -8,6 +8,7 @@ const MainDiv = styled("div")(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   height: "100vh",
+  overflowY: "scroll",
 }));
 
 const Heading = styled("div")(({ theme }) => ({
@@ -17,6 +18,10 @@ const Heading = styled("div")(({ theme }) => ({
   fontSize: "30px",
   userSelect: "none",
   opacity: "0.3",
+
+  [theme.breakpoints.down("sm")]: {
+    marginTop: "75px",
+  },
 }));
 
 const SubLayout = styled("div")(({ theme }) => ({

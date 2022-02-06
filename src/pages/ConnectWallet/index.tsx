@@ -2,6 +2,13 @@ import { FC } from "react";
 import { styled } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import AppLogo from "../../assets/images/Logo.png";
+import { UnsupportedChainIdError, useWeb3React } from "@web3-react/core";
+import {
+  NoEthereumProviderError,
+  UserRejectedRequestError as UserRejectedRequestErrorInjected,
+} from "@web3-react/injected-connector";
+import { injected } from "../../utils/connector";
+import { UserRejectedRequestError as UserRejectedRequestErrorFrame } from "@web3-react/frame-connector";
 
 const MainDiv = styled("div")(({ theme }) => ({
   marginTop: "100px",
@@ -49,18 +56,53 @@ const CustomButtons = styled("div")(({ theme }) => ({
   userSelect: "none",
 
   "&:hover": {
-    // width: "100%",
-    // height: "55px",
     background: "rgba(255, 255, 255, 0.1)",
   },
 }));
 
 const Index: FC = () => {
+  const { activate } = useWeb3React();
   const navigate = useNavigate();
+
+  const getErrorMessage = (error: any) => {
+    if (error instanceof NoEthereumProviderError) {
+      return "No Ethereum browser extension detected, install MetaMask on desktop or visit from a dApp browser on mobile.";
+    } else if (error instanceof UnsupportedChainIdError) {
+      return "You're connected to an unsupported network.";
+    } else if (
+      error instanceof UserRejectedRequestErrorInjected ||
+      error instanceof UserRejectedRequestErrorFrame
+    ) {
+      return "Please authorize this website to access your Ethereum account.";
+    } else {
+      console.error(error);
+      return "An unknown error occurred. Check the console for more details.";
+    }
+  };
+
+  const activateWallet = async () => {
+    try {
+      await activate(injected);
+      localStorage.setItem("preConnected", "true");
+      navigate("/home");
+    } catch (e: any) {
+      if (e.message !== "The user rejected the request.") {
+        const err = getErrorMessage(e);
+        console.log(err);
+      }
+    }
+  };
+
   return (
     <MainDiv>
       <Logo src={AppLogo} />
-      <CustomButtons onClick={() => navigate("/home")}>CONNECT</CustomButtons>
+      <CustomButtons
+        onClick={() => {
+          activateWallet();
+        }}
+      >
+        CONNECT
+      </CustomButtons>
     </MainDiv>
   );
 };
