@@ -36,7 +36,7 @@ const Index: FC = () => {
       <Logo src={AppLogo} />
       <div
         style={{
-          fontSize: "17px",
+          fontSize: "15px",
           fontWeight: 400,
           marginTop: "20px",
           opacity: "0.5",
@@ -48,7 +48,7 @@ const Index: FC = () => {
         <br />
         &#8226; Play TicTacToe with online players. <br />
         <br />
-        &#8226; Win and Collect non-fungible tickets. <br />
+        &#8226; Win and Collect Non-fungible tokens. <br />
         <br />
       </div>
     </MainDiv>

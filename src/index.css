@@ -55,3 +55,7 @@ body {
     display: none;
   }
 }
+
+* {
+  font-family: "Montserrat";
+}

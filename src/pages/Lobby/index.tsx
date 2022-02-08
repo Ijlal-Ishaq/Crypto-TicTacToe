@@ -20,7 +20,7 @@ const Heading = styled("div")(({ theme }) => ({
   userSelect: "none",
   opacity: "0.3",
 
-  [theme.breakpoints.down("sm")]: {
+  [theme.breakpoints.down("smd")]: {
     marginTop: "75px",
   },
 }));
@@ -33,7 +33,7 @@ const SubLayout = styled("div")(({ theme }) => ({
   padding: "30px",
   paddingTop: "40px",
 
-  [theme.breakpoints.down("sm")]: {
+  [theme.breakpoints.down("smd")]: {
     padding: "19px",
     flexDirection: "column-reverse",
   },
@@ -49,6 +49,13 @@ const SubDiv = styled("div")(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   padding: "10px 20px",
+
+  [theme.breakpoints.down("smd")]: {
+    width: "570px",
+    marginLeft: "auto",
+    marginRight: "auto",
+    marginBottom: "20px",
+  },
 
   [theme.breakpoints.down("sm")]: {
     width: "100%",

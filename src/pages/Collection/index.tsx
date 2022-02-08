@@ -4,6 +4,7 @@ import Web3 from "web3";
 import { ABI } from "../../utils/contractABI";
 import { useWeb3React } from "@web3-react/core";
 import axios from "axios";
+import OpenseaLogo from "../../assets/images/opensea-logo.png";
 
 const MainDiv = styled("div")(({ theme }) => ({
   marginLeft: "auto",
@@ -46,7 +47,7 @@ const TokenCard = styled("div")(({ theme }) => ({
   borderRadius: "5px",
   display: "flex",
   flexDirection: "column",
-  padding: "15px",
+  padding: "10px",
   margin: "10px 15px",
 
   [theme.breakpoints.down("sm")]: {
@@ -105,19 +106,31 @@ const Index: FC = () => {
         ) : null}
         {tickets.map((e: any, i: any) => {
           return (
-            <a
-              href={
-                "https://testnets.opensea.io/assets/0x1b6fc2a8535bff5f8425806fb9a884a881237faf/" +
-                e.name.split("#")[1].toString()
-              }
-              target={"_blank"}
-              rel={"noreferrer"}
-              key={i}
-            >
-              <TokenCard>
-                <img src={e.image} alt="" />
-              </TokenCard>
-            </a>
+            <TokenCard>
+              <img src={e.image} alt="" />
+              <a
+                href={
+                  "https://testnets.opensea.io/assets/0x1b6fc2a8535bff5f8425806fb9a884a881237faf/" +
+                  e.name.split("#")[1].toString()
+                }
+                target={"_blank"}
+                rel={"noreferrer"}
+                key={i}
+              >
+                <img
+                  src={OpenseaLogo}
+                  alt=""
+                  style={{
+                    height: "40px",
+                    width: "40px",
+                    position: "absolute",
+                    right: "-8px",
+                    bottom: "-8px",
+                    opacity: "0.3",
+                  }}
+                />
+              </a>
+            </TokenCard>
           );
         })}
       </SubLayout>

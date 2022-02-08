@@ -24,11 +24,11 @@ declare module "@mui/material/styles" {
 const getDesignTokens = (mode: PaletteMode): ThemeOptions => ({
   breakpoints: {
     values: {
-      xs: 0,
+      xs: 450,
       sm: 600,
       smd: 992,
-      md: 1152,
-      lg: 1200,
+      md: 1150,
+      lg: 1250,
       xl: 1536,
     },
   },

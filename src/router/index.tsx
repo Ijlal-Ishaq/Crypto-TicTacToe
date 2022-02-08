@@ -55,8 +55,12 @@ const WalletConnectedRoutes = () => {
 const WalletNotConnectedRoutes = () => {
   return useRoutes([
     {
-      path: "*",
+      path: "connectWallet",
       element: <ConnectWallet />,
+    },
+    {
+      path: "*",
+      element: <Navigate to={"/connectWallet"} />,
     },
   ]);
 };

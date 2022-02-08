@@ -1,5 +1,7 @@
 import { FC, useState } from "react";
 import { styled } from "@mui/material/styles";
+import { concisePlayerAddress } from "../../../../utils/formattingFunctions";
+import { useTheme, useMediaQuery } from "@mui/material";
 
 const MainDiv = styled("div")(({ theme }) => ({
   marginLeft: "auto",
@@ -45,13 +47,17 @@ const Play = styled("div")(({ theme }) => ({
   opacity: "0.7",
 
   "&:hover": {
-    // width: "100%",
-    // height: "55px",
     background: "rgba(255, 255, 255, 0.1)",
   },
 }));
 const Index: FC = () => {
-  const [players] = useState([]);
+  const [players] = useState<string[] | []>([]);
+  const theme = useTheme();
+  const isLarge = useMediaQuery(theme.breakpoints.down("lg"));
+  const isMedium = useMediaQuery(theme.breakpoints.down("md"));
+  const isSmallMedium = useMediaQuery(theme.breakpoints.down("smd"));
+  const isSmall = useMediaQuery(theme.breakpoints.down("sm"));
+  const isExtraSmall = useMediaQuery(theme.breakpoints.down("xs"));
   return (
     <MainDiv>
       <Heading>Requests</Heading>
@@ -71,7 +77,17 @@ const Index: FC = () => {
                 opacity: "0.7",
               }}
             >
-              {player}
+              {isExtraSmall
+                ? concisePlayerAddress(player, 9)
+                : isSmall
+                ? concisePlayerAddress(player, 13)
+                : isSmallMedium
+                ? concisePlayerAddress(player, 17)
+                : isMedium
+                ? concisePlayerAddress(player, 15)
+                : isLarge
+                ? concisePlayerAddress(player, 17)
+                : player}
             </div>
             <Play>Play</Play>
           </PlayerDiv>

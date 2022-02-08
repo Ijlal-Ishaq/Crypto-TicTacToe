@@ -3,6 +3,8 @@ import { styled } from "@mui/material/styles";
 import { socketUrl } from "../../../../utils/urls";
 import { io } from "socket.io-client";
 import { useWeb3React } from "@web3-react/core";
+import { concisePlayerAddress } from "../../../../utils/formattingFunctions";
+import { useTheme, useMediaQuery } from "@mui/material";
 
 const MainDiv = styled("div")(({ theme }) => ({
   marginLeft: "auto",
@@ -71,14 +73,24 @@ const PlayRequest = styled("div")(({ theme }) => ({
 
 const Index: FC = () => {
   const { account } = useWeb3React();
-  const [players, setPlayers] = useState<string[] | []>([]);
+  let [players, setPlayers] = useState<string[] | []>([]);
+
+  const theme = useTheme();
+  const isLarge = useMediaQuery(theme.breakpoints.down("lg"));
+  const isMedium = useMediaQuery(theme.breakpoints.down("md"));
+  const isSmallMedium = useMediaQuery(theme.breakpoints.down("smd"));
+  const isSmall = useMediaQuery(theme.breakpoints.down("sm"));
+  const isExtraSmall = useMediaQuery(theme.breakpoints.down("xs"));
+
+  const socket = io(socketUrl);
 
   useEffect(() => {
-    const socket = io(socketUrl);
     if (socket && account) {
       socket.on("connect", function () {
         socket.emit("join", account);
         socket.on("getOnlineUsers", (users) => {
+          // eslint-disable-next-line react-hooks/exhaustive-deps
+          players = [];
           Object.keys(users).map(function (key, index) {
             //@ts-ignore
             if (!players?.includes(users[key])) {
@@ -92,8 +104,9 @@ const Index: FC = () => {
         });
       });
     }
+    return;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [account]);
 
   return (
     <MainDiv>
@@ -116,7 +129,17 @@ const Index: FC = () => {
                 opacity: "0.7",
               }}
             >
-              {player}
+              {isExtraSmall
+                ? concisePlayerAddress(player, 9)
+                : isSmall
+                ? concisePlayerAddress(player, 13)
+                : isSmallMedium
+                ? concisePlayerAddress(player, 17)
+                : isMedium
+                ? concisePlayerAddress(player, 15)
+                : isLarge
+                ? concisePlayerAddress(player, 17)
+                : player}
             </div>
             <PlayRequest>Request</PlayRequest>
           </PlayerDiv>

@@ -5,7 +5,7 @@ import Router from "./router/index";
 import MuiTheme from "./theme";
 import { useWeb3React } from "@web3-react/core";
 import { styled } from "@mui/material/styles";
-import { conciseAddress } from "./utils/formattingFunctions";
+import { conciseWalletAddress } from "./utils/formattingFunctions";
 import { ClickAwayListener } from "@mui/base";
 
 const WalletAddressButton = styled("div")<{ disconnect?: boolean }>(
@@ -61,7 +61,7 @@ const App: FC = () => {
             setShowDisconnectButton(!showDisconnectButton);
           }}
         >
-          {conciseAddress(account)}
+          {conciseWalletAddress(account)}
         </WalletAddressButton>
         {showDisconnectButton ? (
           <ClickAwayListener
