@@ -7,8 +7,7 @@ const MainDiv = styled("div")(({ theme }) => ({
   marginBottom: "100px",
   marginLeft: "auto",
   marginRight: "auto",
-  padding: "50px 30px",
-  paddingTop: "20px",
+  padding: "20px 30px",
   background: "rgba(255, 255, 255, 0.03)",
   boxShadow: "0 0 1rem 0 rgba(0, 0, 0, .2)",
   backdropFilter: "blur(4px)",
@@ -28,22 +27,29 @@ const Logo = styled("img")(({ theme }) => ({
   margin: "10px auto",
   height: "175px",
   width: "250px",
+  userSelect: "none",
 }));
 
 const Index: FC = () => {
   return (
     <MainDiv>
       <Logo src={AppLogo} />
-      <div style={{ fontSize: "13px", marginTop: "20px", opacity: "0.7" }}>
-        Lorem Ipsum is simply dummy text of the printing and typesetting
-        industry. Lorem Ipsum has been the industry's standard dummy text ever
-        since the 1500s, when an unknown printer took a galley of type and
-        scrambled it to make a type specimen book. It has survived not only five
-        centuries, but also the leap into electronic typesetting, remaining
-        essentially unchanged. It was popularised in the 1960s with the release
-        of Letraset sheets containing Lorem Ipsum passages, and more recently
-        with desktop publishing software like Aldus PageMaker including
-        versions.
+      <div
+        style={{
+          fontSize: "17px",
+          fontWeight: 400,
+          marginTop: "20px",
+          opacity: "0.5",
+          textAlign: "left",
+          userSelect: "none",
+        }}
+      >
+        &#8226; Connect with your Metamask wallet. <br />
+        <br />
+        &#8226; Play TicTacToe with online players. <br />
+        <br />
+        &#8226; Win and Collect non-fungible tickets. <br />
+        <br />
       </div>
     </MainDiv>
   );

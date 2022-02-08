@@ -55,6 +55,11 @@ const Index: FC = () => {
   return (
     <MainDiv>
       <Heading>Requests</Heading>
+      {players.length === 0 ? (
+        <div style={{ margin: "30px 10px", opacity: "0.3" }}>
+          No pending requests.
+        </div>
+      ) : null}
       {players.map((player, i) => {
         return (
           <PlayerDiv key={i}>

@@ -65,10 +65,11 @@ const Index: FC = () => {
   useEffect(() => {
     getTokens();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [web3context]);
+  }, [web3context.account]);
 
   const getTokens = async () => {
-    setTickets([]);
+    tickets = [];
+    setTickets([...tickets]);
     setTotalTickets(-1);
     if (account && web3) {
       const contract = new web3.eth.Contract(
@@ -76,7 +77,6 @@ const Index: FC = () => {
         "0x1B6FC2A8535bFf5f8425806FB9A884a881237faF"
       );
       const tokenCount = await contract.methods.balanceOf(account).call();
-      setTotalTickets(parseInt(tokenCount));
       let token, URI, metadata;
       if (tokenCount) {
         for (let i = 0; i < parseInt(tokenCount); i++) {
@@ -87,6 +87,7 @@ const Index: FC = () => {
         }
         setTickets(tickets);
       }
+      setTotalTickets(parseInt(tokenCount));
     }
   };
 

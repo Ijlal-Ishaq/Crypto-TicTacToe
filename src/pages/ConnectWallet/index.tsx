@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { styled } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import AppLogo from "../../assets/images/Logo.png";
@@ -48,8 +48,8 @@ const CustomButtons = styled("div")(({ theme }) => ({
   cursor: "pointer",
   width: "95%",
   height: "50px",
-  color: "rgba(255,255,255,0.7)",
-  fontSize: "15px",
+  color: "rgba(255,255,255,0.3)",
+  fontSize: "17px",
   marginTop: "20px",
   marginLeft: "auto",
   marginRight: "auto",
@@ -60,9 +60,20 @@ const CustomButtons = styled("div")(({ theme }) => ({
   },
 }));
 
+const ErrorMessage = styled("div")(({ theme }) => ({
+  textAlign: "center",
+  color: "rgba(255,255,255,0.5)",
+  fontSize: "17px",
+  fontWeight: 400,
+  userSelect: "none",
+  marginTop: "10px",
+}));
+
 const Index: FC = () => {
   const { activate } = useWeb3React();
   const navigate = useNavigate();
+  const [errorMsg, setErrorMsg] = useState("");
+  const [errorFlg, setErrorFlg] = useState(false);
 
   const getErrorMessage = (error: any) => {
     if (error instanceof NoEthereumProviderError) {
@@ -75,12 +86,12 @@ const Index: FC = () => {
     ) {
       return "Please authorize this website to access your Ethereum account.";
     } else {
-      console.error(error);
       return "An unknown error occurred. Check the console for more details.";
     }
   };
 
   const activateWallet = async () => {
+    setErrorFlg(false);
     try {
       await activate(injected);
       localStorage.setItem("preConnected", "true");
@@ -88,7 +99,12 @@ const Index: FC = () => {
     } catch (e: any) {
       if (e.message !== "The user rejected the request.") {
         const err = getErrorMessage(e);
+        setErrorMsg(err);
+        setErrorFlg(true);
         console.log(err);
+      } else {
+        setErrorMsg("You rejected the wallet connection request.");
+        setErrorFlg(true);
       }
     }
   };
@@ -96,6 +112,7 @@ const Index: FC = () => {
   return (
     <MainDiv>
       <Logo src={AppLogo} />
+      {errorFlg ? <ErrorMessage>Attention : {errorMsg}</ErrorMessage> : null}
       <CustomButtons
         onClick={() => {
           activateWallet();

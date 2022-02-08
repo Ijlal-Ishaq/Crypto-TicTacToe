@@ -27,7 +27,7 @@ const Heading = styled("div")(({ theme }) => ({
   marginRight: "auto",
   fontSize: "30px",
   userSelect: "none",
-  opacity: "0.5",
+  opacity: "0.3",
 }));
 
 const Index: FC = () => {

@@ -29,6 +29,7 @@ const Logo = styled("img")(({ theme }) => ({
   margin: "10px auto",
   height: "175px",
   width: "250px",
+  userSelect: "none",
 }));
 
 const CustomButtons = styled("div")(({ theme }) => ({
@@ -42,16 +43,15 @@ const CustomButtons = styled("div")(({ theme }) => ({
   cursor: "pointer",
   width: "95%",
   height: "50px",
-  color: "rgba(255,255,255,0.7)",
-  fontSize: "15px",
+  color: "rgba(255,255,255,0.3)",
+  fontSize: "17px",
   marginTop: "20px",
   marginLeft: "auto",
   marginRight: "auto",
   userSelect: "none",
 
   "&:hover": {
-    // width: "100%",
-    // height: "55px",
+    color: "rgba(255,255,255,0.7)",
     background: "rgba(255, 255, 255, 0.1)",
   },
 }));

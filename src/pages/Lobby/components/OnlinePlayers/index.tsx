@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, Key, useEffect, useState } from "react";
 import { styled } from "@mui/material/styles";
 import { socketUrl } from "../../../../utils/urls";
 import { io } from "socket.io-client";
@@ -71,15 +71,24 @@ const PlayRequest = styled("div")(({ theme }) => ({
 
 const Index: FC = () => {
   const { account } = useWeb3React();
-  const [players] = useState([]);
+  const [players, setPlayers] = useState<string[] | []>([]);
 
   useEffect(() => {
     const socket = io(socketUrl);
     if (socket && account) {
       socket.on("connect", function () {
-        socket.emit("addAddress", account);
-        socket.on("getOnlineUsers", ({ data }) => {
-          console.log(data);
+        socket.emit("join", account);
+        socket.on("getOnlineUsers", (users) => {
+          Object.keys(users).map(function (key, index) {
+            //@ts-ignore
+            if (!players?.includes(users[key])) {
+              //@ts-ignore
+              players?.push(users[key]);
+            }
+            return null;
+          });
+          console.log(players);
+          setPlayers([...players]);
         });
       });
     }
@@ -91,7 +100,12 @@ const Index: FC = () => {
       <Heading>Search</Heading>
       <SearchPlayer placeholder="Enter address..." />
       <Heading>Online Players</Heading>
-      {players.map((player, i) => {
+      {players.length === 0 ? (
+        <div style={{ margin: "30px 10px", opacity: "0.3" }}>
+          No online players, invite your friends.
+        </div>
+      ) : null}
+      {players?.map((player: any, i: Key | null | undefined) => {
         return (
           <PlayerDiv key={i}>
             <div
