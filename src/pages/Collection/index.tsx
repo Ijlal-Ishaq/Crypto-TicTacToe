@@ -83,7 +83,7 @@ const Index: FC = () => {
           token = await contract.methods.tokenOfOwnerByIndex(account, i).call();
           URI = await contract.methods.tokenURI(parseInt(token)).call();
           metadata = await axios.get(URI);
-          tickets = [...tickets, metadata.data.image];
+          tickets = [...tickets, metadata.data];
         }
         setTickets(tickets);
       }
@@ -105,9 +105,19 @@ const Index: FC = () => {
         ) : null}
         {tickets.map((e: any, i: any) => {
           return (
-            <TokenCard key={i}>
-              <img src={e} alt="" />
-            </TokenCard>
+            <a
+              href={
+                "https://testnets.opensea.io/assets/0x1b6fc2a8535bff5f8425806fb9a884a881237faf/" +
+                e.name.split("#")[1].toString()
+              }
+              target={"_blank"}
+              rel={"noreferrer"}
+              key={i}
+            >
+              <TokenCard>
+                <img src={e.image} alt="" />
+              </TokenCard>
+            </a>
           );
         })}
       </SubLayout>
