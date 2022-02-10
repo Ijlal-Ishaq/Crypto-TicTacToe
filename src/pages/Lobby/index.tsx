@@ -1,7 +1,10 @@
-import { FC } from "react";
+import { FC, useState, useEffect } from "react";
 import { styled } from "@mui/material/styles";
 import OnlinePlayers from "./components/OnlinePlayers";
 import GameRequests from "./components/GameRequests";
+import { socketUrl } from "../../utils/urls";
+import { io } from "socket.io-client";
+import { useWeb3React } from "@web3-react/core";
 
 const MainDiv = styled("div")(({ theme }) => ({
   marginLeft: "auto",
@@ -64,15 +67,76 @@ const SubDiv = styled("div")(({ theme }) => ({
 }));
 
 const Index: FC = () => {
+  const { account } = useWeb3React();
+
+  let [onlinePlayers, setOnlinePlayers] = useState<string[] | [] | any>([]);
+  let [requestPlayers, setRequestPlayers] = useState<string[] | [] | any>([]);
+
+  const socket = io(socketUrl);
+
+  useEffect(() => {
+    if (socket && account) {
+      socket.on("connect", function () {
+        socket.emit("join", account);
+
+        socket.on("getOnlineUsers", (users: { [key: string]: string }) => {
+          // eslint-disable-next-line react-hooks/exhaustive-deps
+          onlinePlayers = [];
+          Object.keys(users).map(function (key, index) {
+            //@ts-ignore
+            if (
+              !onlinePlayers?.includes(users[key]) &&
+              users[key] !== account
+            ) {
+              //@ts-ignore
+              onlinePlayers?.push(users[key]);
+            }
+            return null;
+          });
+          setOnlinePlayers([...onlinePlayers]);
+        });
+
+        socket.on("playRequests", (user) => {
+          console.log("AAA", user);
+          // eslint-disable-next-line react-hooks/exhaustive-deps
+          requestPlayers = [];
+          //@ts-ignore
+          if (!requestPlayers?.includes(user)) {
+            //@ts-ignore
+            console.log("AAA", user);
+
+            requestPlayers?.push(user);
+            setRequestPlayers([...requestPlayers]);
+          }
+        });
+      });
+    }
+    return;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [account]);
+
+  const requestPlay = (player: string) => {
+    if (socket && player !== "") {
+      socket.emit("requestPlay", player);
+    }
+  };
+
+  const play = (player: string) => {
+    if (socket && player !== "") {
+      console.log(player);
+      socket.emit("requestPlay", player);
+    }
+  };
+
   return (
     <MainDiv>
       <Heading>GAME LOBBY</Heading>
       <SubLayout>
         <SubDiv>
-          <OnlinePlayers />
+          <OnlinePlayers players={onlinePlayers} requestPlay={requestPlay} />
         </SubDiv>
         <SubDiv>
-          <GameRequests />
+          <GameRequests players={requestPlayers} play={play} />
         </SubDiv>
       </SubLayout>
     </MainDiv>

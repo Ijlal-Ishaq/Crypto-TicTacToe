@@ -64,52 +64,6 @@ const getDesignTokens = (mode: PaletteMode): ThemeOptions => ({
           },
         }),
   },
-  typography: {
-    fontFamily: ["Inter", "sans-serif"].join(", "),
-    h1: {
-      fontWeight: 800,
-      fontSize: "2.5rem",
-    },
-    h2: {
-      fontWeight: 600,
-      fontSize: "2rem",
-    },
-    h3: {
-      fontWeight: 600,
-      fontSize: "1.7rem",
-    },
-    h4: {
-      fontWeight: 600,
-      fontSize: "1.6rem",
-    },
-    h5: {
-      fontWeight: 600,
-      fontSize: "1.4rem",
-    },
-    subtitle1: {
-      fontWeight: 800,
-      fontSize: "1.1rem",
-    },
-    subtitle2: {
-      fontWeight: 400,
-      fontSize: "1rem",
-    },
-    body1: {
-      fontWeight: 600,
-      fontSize: "1.1rem",
-    },
-    body2: {
-      fontWeight: 400,
-      fontSize: "1rem",
-    },
-  },
-  components: {
-    MuiCssBaseline: {
-      styleOverrides: {
-        "@font-faces": ["Inter"],
-      },
-    },
-  },
 });
 
 const Theme: FC = ({ children }) => {

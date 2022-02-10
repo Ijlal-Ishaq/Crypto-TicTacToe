@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect } from "react";
 import { styled } from "@mui/material/styles";
 import { concisePlayerAddress } from "../../../../utils/formattingFunctions";
 import { useTheme, useMediaQuery } from "@mui/material";
@@ -50,14 +50,21 @@ const Play = styled("div")(({ theme }) => ({
     background: "rgba(255, 255, 255, 0.1)",
   },
 }));
-const Index: FC = () => {
-  const [players] = useState<string[] | []>([]);
+const Index: FC<{ players: string[] | []; play: (player: string) => void }> = ({
+  players,
+  play,
+}) => {
   const theme = useTheme();
   const isLarge = useMediaQuery(theme.breakpoints.down("lg"));
   const isMedium = useMediaQuery(theme.breakpoints.down("md"));
   const isSmallMedium = useMediaQuery(theme.breakpoints.down("smd"));
   const isSmall = useMediaQuery(theme.breakpoints.down("sm"));
   const isExtraSmall = useMediaQuery(theme.breakpoints.down("xs"));
+
+  useEffect(() => {
+    console.log(players);
+  }, [players]);
+
   return (
     <MainDiv>
       <Heading>Requests</Heading>
@@ -89,7 +96,13 @@ const Index: FC = () => {
                 ? concisePlayerAddress(player, 17)
                 : player}
             </div>
-            <Play>Play</Play>
+            <Play
+              onClick={() => {
+                play(player);
+              }}
+            >
+              Play
+            </Play>
           </PlayerDiv>
         );
       })}

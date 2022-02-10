@@ -36,7 +36,7 @@ const Index: FC = () => {
       <Logo src={AppLogo} />
       <div
         style={{
-          fontSize: "15px",
+          fontSize: "14px",
           fontWeight: 400,
           marginTop: "20px",
           opacity: "0.5",

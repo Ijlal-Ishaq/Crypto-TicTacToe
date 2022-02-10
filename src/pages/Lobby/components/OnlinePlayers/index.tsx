@@ -1,8 +1,5 @@
-import { FC, Key, useEffect, useState } from "react";
+import { FC, Key } from "react";
 import { styled } from "@mui/material/styles";
-import { socketUrl } from "../../../../utils/urls";
-import { io } from "socket.io-client";
-import { useWeb3React } from "@web3-react/core";
 import { concisePlayerAddress } from "../../../../utils/formattingFunctions";
 import { useTheme, useMediaQuery } from "@mui/material";
 
@@ -71,42 +68,16 @@ const PlayRequest = styled("div")(({ theme }) => ({
   },
 }));
 
-const Index: FC = () => {
-  const { account } = useWeb3React();
-  let [players, setPlayers] = useState<string[] | []>([]);
-
+const Index: FC<{
+  players: string[] | [];
+  requestPlay: (player: string) => void;
+}> = ({ players, requestPlay }) => {
   const theme = useTheme();
   const isLarge = useMediaQuery(theme.breakpoints.down("lg"));
   const isMedium = useMediaQuery(theme.breakpoints.down("md"));
   const isSmallMedium = useMediaQuery(theme.breakpoints.down("smd"));
   const isSmall = useMediaQuery(theme.breakpoints.down("sm"));
   const isExtraSmall = useMediaQuery(theme.breakpoints.down("xs"));
-
-  const socket = io(socketUrl);
-
-  useEffect(() => {
-    if (socket && account) {
-      socket.on("connect", function () {
-        socket.emit("join", account);
-        socket.on("getOnlineUsers", (users) => {
-          // eslint-disable-next-line react-hooks/exhaustive-deps
-          players = [];
-          Object.keys(users).map(function (key, index) {
-            //@ts-ignore
-            if (!players?.includes(users[key])) {
-              //@ts-ignore
-              players?.push(users[key]);
-            }
-            return null;
-          });
-          console.log(players);
-          setPlayers([...players]);
-        });
-      });
-    }
-    return;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [account]);
 
   return (
     <MainDiv>
@@ -141,7 +112,13 @@ const Index: FC = () => {
                 ? concisePlayerAddress(player, 17)
                 : player}
             </div>
-            <PlayRequest>Request</PlayRequest>
+            <PlayRequest
+              onClick={() => {
+                requestPlay(player);
+              }}
+            >
+              Request
+            </PlayRequest>
           </PlayerDiv>
         );
       })}
