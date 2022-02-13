@@ -4,12 +4,13 @@ import { FC, useState, useEffect } from "react";
 import { styled } from "@mui/material/styles";
 import OnlinePlayers from "./components/OnlinePlayers";
 import GameRequests from "./components/GameRequests";
-import { ref, onChildAdded, onChildRemoved } from "firebase/database";
+import { ref, onChildAdded, onChildRemoved, onValue } from "firebase/database";
 import axios from "axios";
 import { database } from "../../utils/firebase";
 import { useWeb3React } from "@web3-react/core";
 import { baseUrl } from "../../utils/urls";
 import { io } from "socket.io-client";
+import { useNavigate } from "react-router-dom";
 
 const MainDiv = styled("div")(({ theme }) => ({
   marginLeft: "auto",
@@ -82,7 +83,9 @@ const Index: FC = () => {
 
   let [connectionStatus, setConnectionStatus] = useState<boolean>(false);
   let [connectionKey, setConnectionKey] = useState<string>("");
+  const [gameId, setGameId] = useState<string>("");
   const socket = io(baseUrl, { transports: ["websocket"] });
+  const navigate = useNavigate();
 
   const getOnlineUsers = () => {
     onChildAdded(ref(database, "/onlineUsers"), (data) => {
@@ -133,6 +136,14 @@ const Index: FC = () => {
     );
   };
 
+  const lookForGame = () => {
+    onValue(ref(database, "/usersInfo/" + account + "/game"), (data) => {
+      if (data.val() != "-" && data.val() != null) {
+        setGameId(data.val());
+      }
+    });
+  };
+
   const goOnline = async () => {
     if (socket && account) {
       socket.on("connect", function () {
@@ -144,6 +155,7 @@ const Index: FC = () => {
             getOnlineUsers();
             getRequestedUsers();
             getRequestedToUsers();
+            lookForGame();
           }
         });
       });
@@ -158,7 +170,19 @@ const Index: FC = () => {
     }
   };
 
-  const play = (player: string) => {};
+  const play = async (player: string) => {
+    if (connectionKey != "") {
+      await axios.get(
+        baseUrl + "/nfttt/acceptRequest/" + player + "/" + connectionKey
+      );
+    }
+  };
+
+  useEffect(() => {
+    if (gameId != "" && connectionKey != "") {
+      navigate("/game/" + gameId + "/" + connectionKey);
+    }
+  }, [gameId]);
 
   useEffect(() => {
     onlinePlayers = [];
@@ -185,7 +209,11 @@ const Index: FC = () => {
             />
           </SubDiv>
           <SubDiv>
-            <GameRequests players={requestPlayers} play={play} />
+            <GameRequests
+              players={requestPlayers}
+              play={play}
+              onlinePlayers={onlinePlayers}
+            />
           </SubDiv>
         </SubLayout>
       ) : (

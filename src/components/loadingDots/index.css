@@ -3,8 +3,8 @@
   width: 10px;
   height: 10px;
   border-radius: 5px;
-  background-color: #fff;
-  color: #fff;
+  background-color: rgba(255, 255, 255, 0.3);
+  color: rgba(255, 255, 255, 0.3);
   animation: dotFlashing 1s infinite linear alternate;
   animation-delay: 0.5s;
 }
@@ -22,8 +22,8 @@
   width: 10px;
   height: 10px;
   border-radius: 5px;
-  background-color: #fff;
-  color: #fff;
+  background-color: rgba(255, 255, 255, 0.3);
+  color: rgba(255, 255, 255, 0.3);
   animation: dotFlashing 1s infinite alternate;
   animation-delay: 0s;
 }
@@ -33,8 +33,8 @@
   width: 10px;
   height: 10px;
   border-radius: 5px;
-  background-color: #fff;
-  color: #fff;
+  background-color: rgba(255, 255, 255, 0.3);
+  color: rgba(255, 255, 255, 0.3);
   animation: dotFlashing 1s infinite alternate;
   animation-delay: 1s;
 }
@@ -45,6 +45,6 @@
   }
   50%,
   100% {
-    background-color: rgba(255, 255, 255, 0.7);
+    background-color: rgba(255, 255, 255, 0.3);
   }
 }

@@ -50,10 +50,11 @@ const Play = styled("div")(({ theme }) => ({
     background: "rgba(255, 255, 255, 0.1)",
   },
 }));
-const Index: FC<{ players: string[] | []; play: (player: string) => void }> = ({
-  players,
-  play,
-}) => {
+const Index: FC<{
+  players: string[] | [];
+  play: (player: string) => void;
+  onlinePlayers: string[] | [];
+}> = ({ players, play, onlinePlayers }) => {
   const theme = useTheme();
   const isLarge = useMediaQuery(theme.breakpoints.down("lg"));
   const isMedium = useMediaQuery(theme.breakpoints.down("md"));
@@ -71,35 +72,38 @@ const Index: FC<{ players: string[] | []; play: (player: string) => void }> = ({
       ) : null}
       {players.map((player, i) => {
         return (
-          <PlayerDiv key={i}>
-            <div
-              style={{
-                flex: 1,
-                overflow: "hidden",
-                textAlign: "left",
-                opacity: "0.7",
-              }}
-            >
-              {isExtraSmall
-                ? concisePlayerAddress(player, 9)
-                : isSmall
-                ? concisePlayerAddress(player, 13)
-                : isSmallMedium
-                ? concisePlayerAddress(player, 17)
-                : isMedium
-                ? concisePlayerAddress(player, 15)
-                : isLarge
-                ? concisePlayerAddress(player, 17)
-                : player}
-            </div>
-            <Play
-              onClick={() => {
-                play(player);
-              }}
-            >
-              Play
-            </Play>
-          </PlayerDiv>
+          //@ts-ignore
+          onlinePlayers.includes(player) ? (
+            <PlayerDiv key={i}>
+              <div
+                style={{
+                  flex: 1,
+                  overflow: "hidden",
+                  textAlign: "left",
+                  opacity: "0.7",
+                }}
+              >
+                {isExtraSmall
+                  ? concisePlayerAddress(player, 9)
+                  : isSmall
+                  ? concisePlayerAddress(player, 13)
+                  : isSmallMedium
+                  ? concisePlayerAddress(player, 17)
+                  : isMedium
+                  ? concisePlayerAddress(player, 15)
+                  : isLarge
+                  ? concisePlayerAddress(player, 17)
+                  : player}
+              </div>
+              <Play
+                onClick={() => {
+                  play(player);
+                }}
+              >
+                Play
+              </Play>
+            </PlayerDiv>
+          ) : null
         );
       })}
     </MainDiv>

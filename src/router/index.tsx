@@ -41,7 +41,7 @@ const WalletConnectedRoutes = () => {
         },
         {
           path: "game",
-          element: <Game />,
+          children: [{ path: "*", element: <Game /> }],
         },
         {
           path: "*",
