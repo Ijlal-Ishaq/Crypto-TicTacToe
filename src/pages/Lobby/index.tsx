@@ -1,10 +1,15 @@
+/* eslint-disable eqeqeq */
+/* eslint-disable react-hooks/exhaustive-deps */
 import { FC, useState, useEffect } from "react";
 import { styled } from "@mui/material/styles";
 import OnlinePlayers from "./components/OnlinePlayers";
 import GameRequests from "./components/GameRequests";
-import { socketUrl } from "../../utils/urls";
-import { io } from "socket.io-client";
+import { ref, onChildAdded, onChildRemoved } from "firebase/database";
+import axios from "axios";
+import { database } from "../../utils/firebase";
 import { useWeb3React } from "@web3-react/core";
+import { baseUrl } from "../../utils/urls";
+import { io } from "socket.io-client";
 
 const MainDiv = styled("div")(({ theme }) => ({
   marginLeft: "auto",
@@ -71,74 +76,131 @@ const Index: FC = () => {
 
   let [onlinePlayers, setOnlinePlayers] = useState<string[] | [] | any>([]);
   let [requestPlayers, setRequestPlayers] = useState<string[] | [] | any>([]);
+  let [requestedToPlayers, setRequestedToPlayers] = useState<
+    string[] | [] | any
+  >([]);
 
-  const socket = io(socketUrl);
+  let [connectionStatus, setConnectionStatus] = useState<boolean>(false);
+  let [connectionKey, setConnectionKey] = useState<string>("");
+  const socket = io(baseUrl, { transports: ["websocket"] });
 
-  useEffect(() => {
+  const getOnlineUsers = () => {
+    onChildAdded(ref(database, "/onlineUsers"), (data) => {
+      if (data.val() != account) {
+        onlinePlayers.push(data.val());
+      }
+      setOnlinePlayers([...onlinePlayers]);
+    });
+    onChildRemoved(ref(database, "/onlineUsers"), (data) => {
+      onlinePlayers = onlinePlayers.filter((e: string) => e !== data.val());
+      setOnlinePlayers([...onlinePlayers]);
+    });
+  };
+
+  const getRequestedUsers = () => {
+    onChildAdded(
+      ref(database, "/usersInfo/" + account + "/requests"),
+      (data) => {
+        requestPlayers.push(data.val());
+        setRequestPlayers([...requestPlayers]);
+      }
+    );
+    onChildRemoved(
+      ref(database, "/usersInfo/" + account + "/requests"),
+      (data) => {
+        requestPlayers = requestPlayers.filter((e: string) => e !== data.val());
+        setRequestPlayers([...requestPlayers]);
+      }
+    );
+  };
+
+  const getRequestedToUsers = () => {
+    onChildAdded(
+      ref(database, "/usersInfo/" + account + "/requestedTo"),
+      (data) => {
+        requestedToPlayers.push(data.val());
+        setRequestedToPlayers([...requestedToPlayers]);
+      }
+    );
+    onChildRemoved(
+      ref(database, "/usersInfo/" + account + "/requestedTo"),
+      (data) => {
+        requestedToPlayers = requestedToPlayers.filter(
+          (e: string) => e !== data.val()
+        );
+        setRequestedToPlayers([...requestedToPlayers]);
+      }
+    );
+  };
+
+  const goOnline = async () => {
     if (socket && account) {
       socket.on("connect", function () {
         socket.emit("join", account);
-
-        socket.on("getOnlineUsers", (users: { [key: string]: string }) => {
-          // eslint-disable-next-line react-hooks/exhaustive-deps
-          onlinePlayers = [];
-          Object.keys(users).map(function (key, index) {
-            //@ts-ignore
-            if (
-              !onlinePlayers?.includes(users[key]) &&
-              users[key] !== account
-            ) {
-              //@ts-ignore
-              onlinePlayers?.push(users[key]);
-            }
-            return null;
-          });
-          setOnlinePlayers([...onlinePlayers]);
-        });
-
-        socket.on("playRequests", (user) => {
-          console.log("AAA", user);
-          // eslint-disable-next-line react-hooks/exhaustive-deps
-          requestPlayers = [];
-          //@ts-ignore
-          if (!requestPlayers?.includes(user)) {
-            //@ts-ignore
-            console.log("AAA", user);
-
-            requestPlayers?.push(user);
-            setRequestPlayers([...requestPlayers]);
+        socket.on("joined", (key) => {
+          if (key != "error") {
+            setConnectionKey(key);
+            setConnectionStatus(true);
+            getOnlineUsers();
+            getRequestedUsers();
+            getRequestedToUsers();
           }
         });
       });
     }
-    return;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  };
+
+  const requestPlay = async (player: string) => {
+    if (connectionKey != "") {
+      await axios.get(
+        baseUrl + "/nfttt/sendRequest/" + player + "/" + connectionKey
+      );
+    }
+  };
+
+  const play = (player: string) => {};
+
+  useEffect(() => {
+    onlinePlayers = [];
+    requestPlayers = [];
+    requestedToPlayers = [];
+    setConnectionStatus(false);
+    goOnline();
+
+    return () => {
+      socket.close();
+    };
   }, [account]);
-
-  const requestPlay = (player: string) => {
-    if (socket && player !== "") {
-      socket.emit("requestPlay", player);
-    }
-  };
-
-  const play = (player: string) => {
-    if (socket && player !== "") {
-      console.log(player);
-      socket.emit("requestPlay", player);
-    }
-  };
 
   return (
     <MainDiv>
       <Heading>GAME LOBBY</Heading>
-      <SubLayout>
-        <SubDiv>
-          <OnlinePlayers players={onlinePlayers} requestPlay={requestPlay} />
-        </SubDiv>
-        <SubDiv>
-          <GameRequests players={requestPlayers} play={play} />
-        </SubDiv>
-      </SubLayout>
+      {connectionStatus ? (
+        <SubLayout>
+          <SubDiv>
+            <OnlinePlayers
+              players={onlinePlayers}
+              requestPlay={requestPlay}
+              requestedToPlayers={requestedToPlayers}
+            />
+          </SubDiv>
+          <SubDiv>
+            <GameRequests players={requestPlayers} play={play} />
+          </SubDiv>
+        </SubLayout>
+      ) : (
+        <>
+          <Heading style={{ marginTop: "55px", fontSize: "18px" }}>
+            Connecting.....
+          </Heading>
+          <Heading
+            style={{ marginTop: "10px", fontSize: "10px", margin: "0px 10px" }}
+          >
+            "Make sure you are not connected with same wallet address on another
+            device, window or tab."
+          </Heading>
+        </>
+      )}
     </MainDiv>
   );
 };

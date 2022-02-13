@@ -2,6 +2,7 @@ import { FC, Key } from "react";
 import { styled } from "@mui/material/styles";
 import { concisePlayerAddress } from "../../../../utils/formattingFunctions";
 import { useTheme, useMediaQuery } from "@mui/material";
+import LoadingDots from "../../../../components/loadingDots/index";
 
 const MainDiv = styled("div")(({ theme }) => ({
   marginLeft: "auto",
@@ -71,7 +72,8 @@ const PlayRequest = styled("div")(({ theme }) => ({
 const Index: FC<{
   players: string[] | [];
   requestPlay: (player: string) => void;
-}> = ({ players, requestPlay }) => {
+  requestedToPlayers: string[] | [];
+}> = ({ players, requestPlay, requestedToPlayers }) => {
   const theme = useTheme();
   const isLarge = useMediaQuery(theme.breakpoints.down("lg"));
   const isMedium = useMediaQuery(theme.breakpoints.down("md"));
@@ -117,7 +119,14 @@ const Index: FC<{
                 requestPlay(player);
               }}
             >
-              Request
+              {
+                //@ts-ignore
+                requestedToPlayers.includes(player) ? (
+                  <LoadingDots />
+                ) : (
+                  "Request"
+                )
+              }
             </PlayRequest>
           </PlayerDiv>
         );

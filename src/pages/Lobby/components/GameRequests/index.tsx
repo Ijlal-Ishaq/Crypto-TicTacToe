@@ -1,4 +1,4 @@
-import { FC, useEffect } from "react";
+import { FC } from "react";
 import { styled } from "@mui/material/styles";
 import { concisePlayerAddress } from "../../../../utils/formattingFunctions";
 import { useTheme, useMediaQuery } from "@mui/material";
@@ -60,10 +60,6 @@ const Index: FC<{ players: string[] | []; play: (player: string) => void }> = ({
   const isSmallMedium = useMediaQuery(theme.breakpoints.down("smd"));
   const isSmall = useMediaQuery(theme.breakpoints.down("sm"));
   const isExtraSmall = useMediaQuery(theme.breakpoints.down("xs"));
-
-  useEffect(() => {
-    console.log(players);
-  }, [players]);
 
   return (
     <MainDiv>
