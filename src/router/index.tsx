@@ -9,6 +9,8 @@ import Game from "../pages/Game";
 import PageNotFound from "../pages/PageNotFound";
 import { useWeb3React } from "@web3-react/core";
 import { injected } from "../utils/connector";
+import WinningPage from "../pages/WinningPage";
+import LosingPage from "../pages/LosingPage";
 
 const WalletConnectedRoutes = () => {
   return useRoutes([
@@ -42,6 +44,14 @@ const WalletConnectedRoutes = () => {
         {
           path: "game",
           children: [{ path: "*", element: <Game /> }],
+        },
+        {
+          path: "won",
+          element: <WinningPage />,
+        },
+        {
+          path: "lost",
+          element: <LosingPage />,
         },
         {
           path: "*",

@@ -7,6 +7,7 @@ import { concisePlayerAddress } from "../../utils/formattingFunctions";
 import axios from "axios";
 import { baseUrl } from "../../utils/urls";
 import { useWeb3React } from "@web3-react/core";
+import { useNavigate } from "react-router-dom";
 
 const MainDiv = styled("div")(({ theme }) => ({
   marginLeft: "auto",
@@ -129,6 +130,7 @@ const Index: FC = () => {
     player1: ".....",
     player2: ".....",
   });
+  const navigate = useNavigate();
   const [gameBoard, setGameBoard] = useState({
     "1": "-",
     "2": "-",
@@ -153,6 +155,9 @@ const Index: FC = () => {
         ...board,
         [position]: players.player1 == account ? "0" : "1",
       }));
+
+      setTurn(players.player1 == account ? players.player2 : players.player1);
+
       await axios.get(
         baseUrl +
           "/nfttt/" +
@@ -185,6 +190,10 @@ const Index: FC = () => {
           "8": data.val()["board"]["8"],
           "9": data.val()["board"]["9"],
         });
+
+        if (data.val()["winner"] != "-") {
+          navigate(data.val()["winner"] == account ? "/won" : "/lost");
+        }
       }
     });
   }, [gameId]);
