@@ -75,7 +75,7 @@ const Index: FC = () => {
     if (account && web3) {
       const contract = new web3.eth.Contract(
         JSON.parse(ABI),
-        "0x1B6FC2A8535bFf5f8425806FB9A884a881237faF"
+        "0x7f0c1bAE7Ed06bF1479f1Be3B23CE08c4872dc7e"
       );
       const tokenCount = await contract.methods.balanceOf(account).call();
       let token, URI, metadata;

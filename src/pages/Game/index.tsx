@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable eqeqeq */
 import { FC, useEffect, useState } from "react";
 import { styled } from "@mui/material/styles";
@@ -33,7 +34,7 @@ const Heading = styled("div")(({ theme }) => ({
 
 const GameBoard = styled("div")(({ theme }) => ({
   marginTop: "10px",
-  marginBottom: "100px",
+  marginBottom: "10px",
   marginLeft: "auto",
   marginRight: "auto",
   padding: "20px 30px",
@@ -65,6 +66,29 @@ const VerticalDivider = styled("div")(({ theme }) => ({
   height: "70px",
   width: "7px",
   backgroundColor: "rgba(255,255,255,0.3)",
+}));
+
+const CustomButtons = styled("div")(({ theme }) => ({
+  background: "rgba(255, 255, 255, 0.03)",
+  boxShadow: "0 0 1rem 0 rgba(0, 0, 0, .2)",
+  backdropFilter: "blur(4px)",
+  borderRadius: "5px",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  cursor: "pointer",
+  padding: "13px 50px",
+  color: "rgba(255,255,255,0.3)",
+  fontSize: "17px",
+  marginTop: "20px",
+  marginLeft: "auto",
+  marginRight: "auto",
+  userSelect: "none",
+
+  "&:hover": {
+    color: "rgba(255,255,255,0.7)",
+    background: "rgba(255, 255, 255, 0.1)",
+  },
 }));
 
 const getHeader = (turn: string, players: any) => {
@@ -125,6 +149,8 @@ const Index: FC = () => {
   const [gameId, setGameId] = useState("");
   const [connectionKey, setConnectionKey] = useState("");
   const [turn, setTurn] = useState("");
+  const [gameOver, setGameover] = useState(false);
+  const [winner, setWinner] = useState("-");
   const { account } = useWeb3React();
   const [players, setPlayers] = useState({
     player1: ".....",
@@ -148,7 +174,8 @@ const Index: FC = () => {
       gameId !== "" &&
       connectionKey !== "" &&
       position !== "" &&
-      turn == account
+      turn == account &&
+      !gameOver
     ) {
       //@ts-ignore
       setGameBoard((board) => ({
@@ -173,7 +200,7 @@ const Index: FC = () => {
 
   useEffect(() => {
     onValue(ref(database, "/gamesRoom/" + gameId), (data) => {
-      if (data.val()["player1"]) {
+      if (data.val()["player1"] && !gameOver) {
         setPlayers({
           player1: data.val()["player1"],
           player2: data.val()["player2"],
@@ -192,7 +219,8 @@ const Index: FC = () => {
         });
 
         if (data.val()["winner"] != "-") {
-          navigate(data.val()["winner"] == account ? "/won" : "/lost");
+          setWinner(data.val()["winner"]);
+          setGameover(true);
         }
       }
     });
@@ -303,6 +331,29 @@ const Index: FC = () => {
           </GameBlock>
         </div>
       </GameBoard>
+
+      {turn == account && !gameOver ? (
+        <Heading style={{ marginTop: "10px" }}>your turn!</Heading>
+      ) : null}
+
+      {gameOver ? (
+        <>
+          <Heading style={{ marginTop: "10px" }}>
+            {winner == account ? "you won!" : "you lost!"}
+          </Heading>
+          <CustomButtons
+            onClick={() => navigate(winner == account ? "/won" : "/lost")}
+          >
+            Next
+          </CustomButtons>
+        </>
+      ) : null}
+
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
     </MainDiv>
   );
 };
