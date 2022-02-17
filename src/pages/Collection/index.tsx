@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import { FC, useEffect, useState } from "react";
 import { styled } from "@mui/material/styles";
 import Web3 from "web3";
@@ -56,6 +57,23 @@ const TokenCard = styled("div")(({ theme }) => ({
   },
 }));
 
+const ClaimBtn = styled("div")(({ theme }) => ({
+  width: "fit-content",
+  height: "fit-content",
+  background: "rgba(255, 255, 255, 0.15)",
+  color: "rgba(255, 255, 255, 0.7)",
+  boxShadow: "0 0 1rem 0 rgba(0, 0, 0, .2)",
+  backdropFilter: "blur(4px)",
+  borderRadius: "20px",
+  display: "flex",
+  flexDirection: "column",
+  padding: "10px 20px",
+  position: "absolute",
+  right: "-8px",
+  bottom: "-8px",
+  cursor: "pointer",
+}));
+
 const Index: FC = () => {
   const web3context = useWeb3React();
   const web3 = new Web3(web3context?.library?.currentProvider);
@@ -78,17 +96,56 @@ const Index: FC = () => {
         "0x7f0c1bAE7Ed06bF1479f1Be3B23CE08c4872dc7e"
       );
       const tokenCount = await contract.methods.balanceOf(account).call();
-      let token, URI, metadata;
-      if (tokenCount) {
-        for (let i = 0; i < parseInt(tokenCount); i++) {
-          token = await contract.methods.tokenOfOwnerByIndex(account, i).call();
-          URI = await contract.methods.tokenURI(parseInt(token)).call();
-          metadata = await axios.get(URI);
-          tickets = [...tickets, metadata.data];
+      const gameWin = await contract.methods.getUserGames(account).call();
+      const ownedTokens = [];
+
+      for (let i = 0; i < tokenCount; i++) {
+        let tid = await contract.methods.tokenOfOwnerByIndex(account, i).call();
+        ownedTokens.push(tid);
+      }
+
+      let URI, metadata, ownership;
+      if (gameWin.length > 0) {
+        for (let i = 0; i < parseInt(gameWin.length); i++) {
+          if (gameWin[i] != 0) {
+            URI = await contract.methods.tokenURI(parseInt(gameWin[i])).call();
+            ownership = ownedTokens.includes(gameWin[i]);
+            metadata = await axios.get(URI);
+
+            if (ownership) {
+              metadata["data"]["ownership"] = true;
+              tickets = [...tickets, metadata.data];
+            } else {
+              metadata["data"]["ownership"] = false;
+              tickets = [...tickets, metadata.data];
+            }
+          } else {
+            break;
+          }
         }
         setTickets(tickets);
       }
-      setTotalTickets(parseInt(tokenCount));
+      setTotalTickets(parseInt(tickets.length));
+    }
+  };
+
+  const mint = async (id: number) => {
+    if (account && web3) {
+      const contract = new web3.eth.Contract(
+        JSON.parse(ABI),
+        "0x7f0c1bAE7Ed06bF1479f1Be3B23CE08c4872dc7e"
+      );
+      contract.methods
+        .mintNFTTT(account, id)
+        .send({ from: account })
+        .on(
+          "confirmation",
+          async function (confirmationNumber: any, receipt: any) {
+            if (confirmationNumber === 3) {
+              getTokens();
+            }
+          }
+        );
     }
   };
 
@@ -101,35 +158,46 @@ const Index: FC = () => {
         ) : null}
         {totalTickets === 0 ? (
           <Heading style={{ fontSize: "20px" }}>
-            You don't have any tokens.
+            You don't have any tokens. If you just won a game, it might take
+            some time to show here and you can claim.
           </Heading>
         ) : null}
         {tickets.map((e: any, i: any) => {
           return (
             <TokenCard>
               <img src={e.image} alt="" />
-              <a
-                href={
-                  "https://testnets.opensea.io/assets/0x1b6fc2a8535bff5f8425806fb9a884a881237faf/" +
-                  e.name.split("#")[1].toString()
-                }
-                target={"_blank"}
-                rel={"noreferrer"}
-                key={i}
-              >
-                <img
-                  src={OpenseaLogo}
-                  alt=""
-                  style={{
-                    height: "40px",
-                    width: "40px",
-                    position: "absolute",
-                    right: "-8px",
-                    bottom: "-8px",
-                    opacity: "0.3",
+              {e.ownership ? (
+                <a
+                  href={
+                    "https://testnets.opensea.io/assets/0x1b6fc2a8535bff5f8425806fb9a884a881237faf/" +
+                    e.name.split("#")[1].toString()
+                  }
+                  target={"_blank"}
+                  rel={"noreferrer"}
+                  key={i}
+                >
+                  <img
+                    src={OpenseaLogo}
+                    alt=""
+                    style={{
+                      height: "40px",
+                      width: "40px",
+                      position: "absolute",
+                      right: "-8px",
+                      bottom: "-8px",
+                      opacity: "0.3",
+                    }}
+                  />
+                </a>
+              ) : (
+                <ClaimBtn
+                  onClick={() => {
+                    mint(parseInt(e.name.split("#")[1]));
                   }}
-                />
-              </a>
+                >
+                  Claim
+                </ClaimBtn>
+              )}
             </TokenCard>
           );
         })}
