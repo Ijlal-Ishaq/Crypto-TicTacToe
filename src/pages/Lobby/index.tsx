@@ -11,6 +11,7 @@ import { useWeb3React } from "@web3-react/core";
 import { baseUrl } from "../../utils/urls";
 import { io } from "socket.io-client";
 import { useNavigate } from "react-router-dom";
+import BackButton from "../../components/BackButton";
 
 const MainDiv = styled("div")(({ theme }) => ({
   marginLeft: "auto",
@@ -198,6 +199,7 @@ const Index: FC = () => {
 
   return (
     <MainDiv>
+      <BackButton />
       <Heading>GAME LOBBY</Heading>
       {connectionStatus ? (
         <SubLayout>
@@ -218,11 +220,11 @@ const Index: FC = () => {
         </SubLayout>
       ) : (
         <>
-          <Heading style={{ marginTop: "55px", fontSize: "18px" }}>
+          <Heading style={{ marginTop: "55px", fontSize: "20px" }}>
             Connecting.....
           </Heading>
           <Heading
-            style={{ marginTop: "10px", fontSize: "10px", margin: "0px 10px" }}
+            style={{ marginTop: "10px", fontSize: "15px", margin: "0px 10px" }}
           >
             "Make sure you are not connected with same wallet address on another
             device, window or tab."

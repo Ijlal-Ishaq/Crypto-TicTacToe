@@ -41,8 +41,7 @@ const WalletAddressButton = styled("div")<{ disconnect?: boolean }>(
 );
 
 const App: FC = () => {
-  const { account } = useWeb3React();
-  const { deactivate } = useWeb3React();
+  const { account, deactivate } = useWeb3React();
 
   const [showDisconnectButton, setShowDisconnectButton] =
     useState<boolean>(false);

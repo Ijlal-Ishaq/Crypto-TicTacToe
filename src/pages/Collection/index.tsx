@@ -6,6 +6,7 @@ import { ABI } from "../../utils/contractABI";
 import { useWeb3React } from "@web3-react/core";
 import axios from "axios";
 import OpenseaLogo from "../../assets/images/opensea-logo.png";
+import BackButton from "../../components/BackButton";
 
 const MainDiv = styled("div")(({ theme }) => ({
   marginLeft: "auto",
@@ -141,7 +142,7 @@ const Index: FC = () => {
         .on(
           "confirmation",
           async function (confirmationNumber: any, receipt: any) {
-            if (confirmationNumber === 3) {
+            if (confirmationNumber === 1) {
               getTokens();
             }
           }
@@ -151,6 +152,7 @@ const Index: FC = () => {
 
   return (
     <MainDiv>
+      <BackButton />
       <Heading>YOUR COLLECTION</Heading>
       <SubLayout>
         {totalTickets === -1 ? (
@@ -169,7 +171,7 @@ const Index: FC = () => {
               {e.ownership ? (
                 <a
                   href={
-                    "https://testnets.opensea.io/assets/0x1b6fc2a8535bff5f8425806fb9a884a881237faf/" +
+                    "https://testnets.opensea.io/assets/0x7f0c1bAE7Ed06bF1479f1Be3B23CE08c4872dc7e/" +
                     e.name.split("#")[1].toString()
                   }
                   target={"_blank"}

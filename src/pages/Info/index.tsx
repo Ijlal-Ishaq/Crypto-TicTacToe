@@ -1,6 +1,7 @@
 import { FC } from "react";
 import { styled } from "@mui/material/styles";
 import AppLogo from "../../assets/images/Logo.png";
+import BackButton from "../../components/BackButton";
 
 const MainDiv = styled("div")(({ theme }) => ({
   marginTop: "100px",
@@ -32,26 +33,29 @@ const Logo = styled("img")(({ theme }) => ({
 
 const Index: FC = () => {
   return (
-    <MainDiv>
-      <Logo src={AppLogo} />
-      <div
-        style={{
-          fontSize: "14px",
-          fontWeight: 400,
-          marginTop: "20px",
-          opacity: "0.5",
-          textAlign: "left",
-          userSelect: "none",
-        }}
-      >
-        &#8226; Connect with your Metamask wallet. <br />
-        <br />
-        &#8226; Play TicTacToe with online players. <br />
-        <br />
-        &#8226; Win and Collect Non-fungible tokens. <br />
-        <br />
-      </div>
-    </MainDiv>
+    <>
+      <BackButton />
+      <MainDiv>
+        <Logo src={AppLogo} />
+        <div
+          style={{
+            fontSize: "14px",
+            fontWeight: 400,
+            marginTop: "20px",
+            opacity: "0.5",
+            textAlign: "left",
+            userSelect: "none",
+          }}
+        >
+          &#8226; Connect with your Metamask wallet. <br />
+          <br />
+          &#8226; Play TicTacToe with online players. <br />
+          <br />
+          &#8226; Win and Collect Non-fungible tokens. <br />
+          <br />
+        </div>
+      </MainDiv>
+    </>
   );
 };
 
