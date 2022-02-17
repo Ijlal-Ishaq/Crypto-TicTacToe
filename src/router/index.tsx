@@ -11,6 +11,7 @@ import { useWeb3React } from "@web3-react/core";
 import { injected } from "../utils/connector";
 import WinningPage from "../pages/WinningPage";
 import LosingPage from "../pages/LosingPage";
+import DrawPage from "../pages/DrawPage";
 
 const WalletConnectedRoutes = () => {
   return useRoutes([
@@ -52,6 +53,10 @@ const WalletConnectedRoutes = () => {
         {
           path: "lost",
           element: <LosingPage />,
+        },
+        {
+          path: "draw",
+          element: <DrawPage />,
         },
         {
           path: "*",

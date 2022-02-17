@@ -60,6 +60,9 @@ const GameBlock = styled("div")(({ theme }) => ({
   alignItems: "center",
   justifyContent: "center",
   cursor: "pointer",
+  opacity: "0.5",
+  fontWeight: "500",
+  fontSize: "30px",
 }));
 
 const VerticalDivider = styled("div")(({ theme }) => ({
@@ -222,6 +225,9 @@ const Index: FC = () => {
           setWinner(data.val()["winner"]);
           setGameover(true);
         }
+        if (data.val()["draw"] != "-") {
+          setGameover(true);
+        }
       }
     });
   }, [gameId]);
@@ -339,10 +345,18 @@ const Index: FC = () => {
       {gameOver ? (
         <>
           <Heading style={{ marginTop: "10px" }}>
-            {winner == account ? "you won!" : "you lost!"}
+            {winner == "-"
+              ? "it's a draw!"
+              : winner == account
+              ? "you won!"
+              : "you lost!"}
           </Heading>
           <CustomButtons
-            onClick={() => navigate(winner == account ? "/won" : "/lost")}
+            onClick={() =>
+              navigate(
+                winner == "-" ? "/draw" : winner == account ? "/won" : "/lost"
+              )
+            }
           >
             Next
           </CustomButtons>
