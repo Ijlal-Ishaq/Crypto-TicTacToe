@@ -15,7 +15,7 @@ const BackButton = styled("div")<{ visible?: boolean }>(
     justifyContent: "center",
     alignItems: "center",
     cursor: "pointer",
-    padding: "10px 20px",
+    padding: "5px 5px",
     color: "rgba(255,255,255,0.7)",
     fontSize: "15px",
     fontWeight: 700,
@@ -45,7 +45,10 @@ const Index: FC = () => {
     >
       {
         // eslint-disable-next-line jsx-a11y/alt-text
-        <img src={BackIcon} style={{ height: "100%", opacity: "0.7" }} />
+        <img
+          src={BackIcon}
+          style={{ height: "90%", width: "100%", opacity: "0.7" }}
+        />
       }
     </BackButton>
   );

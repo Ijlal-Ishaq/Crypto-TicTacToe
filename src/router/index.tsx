@@ -12,6 +12,8 @@ import { injected } from "../utils/connector";
 import WinningPage from "../pages/WinningPage";
 import LosingPage from "../pages/LosingPage";
 import DrawPage from "../pages/DrawPage";
+import axios from "axios";
+import { baseUrl } from "../utils/urls";
 
 const WalletConnectedRoutes = () => {
   return useRoutes([
@@ -86,6 +88,7 @@ const Index: FC = () => {
   const [checkingPreState, setCheckingPreState] = useState(true);
 
   useEffect(() => {
+    axios.get(baseUrl + "/nfttt");
     reConnect();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
