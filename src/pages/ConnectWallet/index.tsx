@@ -118,7 +118,7 @@ const Index: FC = () => {
           activateWallet();
         }}
       >
-        CONNECT
+        CONNECT METAMASK
       </CustomButtons>
     </MainDiv>
   );
