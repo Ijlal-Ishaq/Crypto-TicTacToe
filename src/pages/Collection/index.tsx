@@ -98,6 +98,7 @@ const Index: FC = () => {
       );
       const tokenCount = await contract.methods.balanceOf(account).call();
       const gameWin = await contract.methods.getUserGames(account).call();
+      console.log(gameWin);
       const ownedTokens = [];
 
       for (let i = 0; i < tokenCount; i++) {
@@ -111,15 +112,18 @@ const Index: FC = () => {
           if (gameWin[i] != 0) {
             URI = await contract.methods.tokenURI(parseInt(gameWin[i])).call();
             ownership = ownedTokens.includes(gameWin[i]);
-            metadata = await axios.get(URI);
-
-            if (ownership) {
-              metadata["data"]["ownership"] = true;
-              tickets = [...tickets, metadata.data];
-            } else {
-              metadata["data"]["ownership"] = false;
-              tickets = [...tickets, metadata.data];
-            }
+            try {
+              URI =
+                "https://benjaminkor2.infura-ipfs.io/ipfs/" + URI.split("/")[4];
+              metadata = await axios.get(URI);
+              if (ownership) {
+                metadata["data"]["ownership"] = true;
+                tickets = [...tickets, metadata.data];
+              } else {
+                metadata["data"]["ownership"] = false;
+                tickets = [...tickets, metadata.data];
+              }
+            } catch (e) {}
           } else {
             break;
           }
@@ -167,7 +171,10 @@ const Index: FC = () => {
         {tickets.map((e: any, i: any) => {
           return (
             <TokenCard>
-              <img src={e.image} alt="" />
+              <img
+                src={"https://benjaminkor2.infura-ipfs.io/ipfs/" + e.image}
+                alt=""
+              />
               {e.ownership ? (
                 <a
                   href={
